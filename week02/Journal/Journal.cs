@@ -5,6 +5,41 @@ using System.IO;
 public class Journal
 {
     private List<Entry> _entries = new List<Entry>();
+    private int _streak = 0;
+    private DateTime _lastEntryDate = DateTime.MinValue;
+
+    public void WriteEntry(PromptGenerator promptGen)
+    {
+        string prompt = promptGen.GetRandomPrompt();
+        Console.WriteLine($"\nPrompt: {prompt}");
+        Console.Write("Your response: ");
+        string response = Console.ReadLine();
+        Console.Write("Your mood today: ");
+        string mood = Console.ReadLine();
+
+        Entry entry = new Entry
+        {
+            Date = DateTime.Now.ToShortDateString(),
+            Prompt = prompt,
+            Response = response,
+            Mood = mood
+        };
+
+        AddEntry(entry);
+
+        DateTime today = DateTime.Today;
+        if ((_lastEntryDate != DateTime.MinValue) && (today - _lastEntryDate).Days == 1)
+            _streak++;
+        else
+            _streak = 1;
+
+        _lastEntryDate = today;
+
+        SaveStreak();
+        SaveLastEntryDate();
+
+        Console.WriteLine($"\n🔥 Writing Streak: {_streak} day(s)!");
+    }
 
     public void AddEntry(Entry entry)
     {
@@ -28,32 +63,56 @@ public class Journal
 
     public void SaveToFile(string filename)
     {
-        using (StreamWriter outputFile = new StreamWriter(filename))
+        using (StreamWriter writer = new StreamWriter(filename))
         {
             foreach (Entry entry in _entries)
             {
-                outputFile.WriteLine(entry.ToFileFormat());
+                writer.WriteLine(entry.ToFileFormat());
             }
         }
-        Console.WriteLine("Journal saved.");
+        Console.WriteLine("Journal successfully saved.");
     }
 
     public void LoadFromFile(string filename)
     {
-        if (File.Exists(filename))
-        {
-            _entries.Clear();
-            string[] lines = File.ReadAllLines(filename);
-            foreach (string line in lines)
-            {
-                Entry entry = Entry.FromFileFormat(line);
-                _entries.Add(entry);
-            }
-            Console.WriteLine("Journal loaded.");
-        }
-        else
+        if (!File.Exists(filename))
         {
             Console.WriteLine("File not found.");
+            return;
+        }
+
+        _entries.Clear();
+        foreach (string line in File.ReadAllLines(filename))
+        {
+            Entry entry = Entry.FromFileFormat(line);
+            _entries.Add(entry);
+        }
+        Console.WriteLine("Journal successfully loaded.");
+    }
+
+    public void SaveStreak()
+    {
+        File.WriteAllText("streak.txt", _streak.ToString());
+    }
+
+    public void LoadStreak()
+    {
+        if (File.Exists("streak.txt"))
+        {
+            _streak = int.Parse(File.ReadAllText("streak.txt"));
+        }
+    }
+
+    public void SaveLastEntryDate()
+    {
+        File.WriteAllText("lastDate.txt", _lastEntryDate.ToShortDateString());
+    }
+
+    public void LoadLastEntryDate()
+    {
+        if (File.Exists("lastDate.txt"))
+        {
+            _lastEntryDate = DateTime.Parse(File.ReadAllText("lastDate.txt"));
         }
     }
 }

@@ -2,23 +2,22 @@ using System;
 
 public class Entry
 {
-    public string _date;
-    public string _prompt;
-    public string _response;
-    public string _mood;
+    public string Date { get; set; }
+    public string Prompt { get; set; }
+    public string Response { get; set; }
+    public string Mood { get; set; }
 
     public void Display()
     {
-        Console.WriteLine($"Date: {_date}");
-        Console.WriteLine($"Mood: {_mood}");
-        Console.WriteLine($"Prompt: {_prompt}");
-        Console.WriteLine($"Response: {_response}");
-        Console.WriteLine();
+        Console.WriteLine($"Date: {Date}");
+        Console.WriteLine($"Mood: {Mood}");
+        Console.WriteLine($"Prompt: {Prompt}");
+        Console.WriteLine($"Response: {Response}\n");
     }
 
     public string ToFileFormat()
     {
-        return $"{_date}|{_mood}|{_prompt}|{_response}";
+        return $"{Date}|{Mood}|{Prompt}|{Response}";
     }
 
     public static Entry FromFileFormat(string line)
@@ -26,10 +25,10 @@ public class Entry
         string[] parts = line.Split('|');
         return new Entry
         {
-            _date = parts[0],
-            _mood = parts[1],
-            _prompt = parts[2],
-            _response = parts[3]
+            Date = parts[0],
+            Mood = parts[1],
+            Prompt = parts[2],
+            Response = parts[3]
         };
     }
 }
