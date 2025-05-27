@@ -23,6 +23,12 @@ public class Entry
     public static Entry FromFileFormat(string line)
     {
         string[] parts = line.Split('|');
+        if (parts.Length < 4)
+        {
+            Console.WriteLine("Skipping malformed entry line.");
+            return null;
+        }
+
         return new Entry
         {
             Date = parts[0],

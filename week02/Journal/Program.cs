@@ -34,11 +34,21 @@ class Program
                 case "3":
                     Console.Write("Enter filename to save: ");
                     string saveFile = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(saveFile))
+                    {
+                        Console.WriteLine("Filename cannot be empty.");
+                        break;
+                    }
                     myJournal.SaveToFile(saveFile);
                     break;
                 case "4":
                     Console.Write("Enter filename to load: ");
                     string loadFile = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(loadFile))
+                    {
+                        Console.WriteLine("Filename cannot be empty.");
+                        break;
+                    }
                     myJournal.LoadFromFile(loadFile);
                     break;
                 case "5":
@@ -50,4 +60,4 @@ class Program
             }
         }
     }
-} 
+}

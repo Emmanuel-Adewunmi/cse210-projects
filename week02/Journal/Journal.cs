@@ -43,7 +43,8 @@ public class Journal
 
     public void AddEntry(Entry entry)
     {
-        _entries.Add(entry);
+        if (entry != null)
+            _entries.Add(entry);
     }
 
     public void DisplayJournal()
@@ -63,14 +64,21 @@ public class Journal
 
     public void SaveToFile(string filename)
     {
-        using (StreamWriter writer = new StreamWriter(filename))
+        try
         {
-            foreach (Entry entry in _entries)
+            using (StreamWriter writer = new StreamWriter(filename))
             {
-                writer.WriteLine(entry.ToFileFormat());
+                foreach (Entry entry in _entries)
+                {
+                    writer.WriteLine(entry.ToFileFormat());
+                }
             }
+            Console.WriteLine("Journal successfully saved.");
         }
-        Console.WriteLine("Journal successfully saved.");
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving file: {ex.Message}");
+        }
     }
 
     public void LoadFromFile(string filename)
@@ -82,12 +90,20 @@ public class Journal
         }
 
         _entries.Clear();
-        foreach (string line in File.ReadAllLines(filename))
+        try
         {
-            Entry entry = Entry.FromFileFormat(line);
-            _entries.Add(entry);
+            foreach (string line in File.ReadAllLines(filename))
+            {
+                Entry entry = Entry.FromFileFormat(line);
+                if (entry != null)
+                    _entries.Add(entry);
+            }
+            Console.WriteLine("Journal successfully loaded.");
         }
-        Console.WriteLine("Journal successfully loaded.");
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading file: {ex.Message}");
+        }
     }
 
     public void SaveStreak()
@@ -97,9 +113,9 @@ public class Journal
 
     public void LoadStreak()
     {
-        if (File.Exists("streak.txt"))
+        if (File.Exists("streak.txt") && int.TryParse(File.ReadAllText("streak.txt"), out int streak))
         {
-            _streak = int.Parse(File.ReadAllText("streak.txt"));
+            _streak = streak;
         }
     }
 
@@ -110,9 +126,9 @@ public class Journal
 
     public void LoadLastEntryDate()
     {
-        if (File.Exists("lastDate.txt"))
+        if (File.Exists("lastDate.txt") && DateTime.TryParse(File.ReadAllText("lastDate.txt"), out DateTime parsedDate))
         {
-            _lastEntryDate = DateTime.Parse(File.ReadAllText("lastDate.txt"));
+            _lastEntryDate = parsedDate;
         }
     }
 }
