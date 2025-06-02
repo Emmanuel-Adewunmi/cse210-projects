@@ -2,24 +2,24 @@ public class Address
 {
     private string _street;
     private string _city;
-    private string _stateProvince;
+    private string _state;
     private string _country;
 
-    public Address(string street, string city, string stateProvince, string country)
+    public Address(string street, string city, string state, string country)
     {
         _street = street;
         _city = city;
-        _stateProvince = stateProvince;
+        _state = state;
         _country = country;
     }
 
     public bool IsInUSA()
     {
-        return _country.ToLower() == "usa";
+        return _country.ToUpper() == "USA";
     }
 
     public string GetFullAddress()
     {
-        return $"{_street}\n{_city}, {_stateProvince}\n{_country}";
+        return $"{_street}\n{_city}, {_state}\n{_country}";
     }
 }

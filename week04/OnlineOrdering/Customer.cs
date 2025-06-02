@@ -9,7 +9,7 @@ public class Customer
         _address = address;
     }
 
-    public bool IsInUSA()
+    public bool LivesInUSA()
     {
         return _address.IsInUSA();
     }
@@ -19,8 +19,8 @@ public class Customer
         return _name;
     }
 
-    public string GetShippingAddress()
+    public Address GetAddress()
     {
-        return _address.GetFullAddress();
+        return _address;
     }
 }
