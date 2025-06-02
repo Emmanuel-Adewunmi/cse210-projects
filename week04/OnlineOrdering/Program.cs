@@ -6,7 +6,7 @@ class Program
     {
         // Order 1 (USA)
         Address address1 = new Address("123 Main St", "Springfield", "IL", "USA");
-        Customer customer1 = new Customer("John Dave", address1);
+        Customer customer1 = new Customer("John Doe", address1);
         Order order1 = new Order(customer1);
 
         Product product1 = new Product("T-shirt", "TS001", 19.99, 2);
@@ -24,7 +24,7 @@ class Program
 
         // Order 2 (International)
         Address address2 = new Address("456 Maple Rd", "Toronto", "ON", "Canada");
-        Customer customer2 = new Customer("Alice Joel", address2);
+        Customer customer2 = new Customer("Alice Smith", address2);
         Order order2 = new Order(customer2);
 
         Product product3 = new Product("Book", "BK007", 15.50, 2);
