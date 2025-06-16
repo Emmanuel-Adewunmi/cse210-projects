@@ -1,0 +1,3 @@
+0
+SimpleGoal|Study|In my personal studies this weel, I'll take 30 mis to study about Priesthood keys.|10|False
+NegativeGoal|Exercise|On days I do not exercise, subtract 10 points|-10

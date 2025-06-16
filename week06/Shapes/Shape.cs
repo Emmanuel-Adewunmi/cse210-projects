@@ -19,6 +19,6 @@ public class Shape
 
     public virtual double GetArea()
     {
-        return 0; // Base class doesn't know how to compute area
+        return 0; 
     }
 }
